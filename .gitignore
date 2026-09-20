@@ -22,3 +22,4 @@ mobile/*.iml
 mobile/assets/dict/*.db
 mobile/ecdict_full.db
 backend/data/ecdict_full.db
+mobile/
