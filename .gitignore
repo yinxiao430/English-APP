@@ -21,3 +21,4 @@ mobile/*.iml
 # 词典大文件不进版本库
 mobile/assets/dict/*.db
 mobile/ecdict_full.db
+backend/data/ecdict_full.db
