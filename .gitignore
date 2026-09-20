@@ -1,0 +1,23 @@
+# Python
+backend/.venv/
+backend/.env
+__pycache__/
+*.pyc
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/build/
+mobile/.idea/
+mobile/android/
+mobile/ios/
+mobile/windows/
+mobile/linux/
+mobile/macos/
+mobile/web/
+mobile/*.iml
+
+# 词典大文件不进版本库
+mobile/assets/dict/*.db
+mobile/ecdict_full.db

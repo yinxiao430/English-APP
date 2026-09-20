@@ -1,0 +1,4 @@
+# Windows 批处理脚本必须使用 CRLF 换行；
+# 若为 LF，cmd 会撕裂命令行、中文 echo/REM 乱码并报“不是内部或外部命令”
+*.bat text eol=crlf
+*.cmd text eol=crlf

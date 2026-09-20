@@ -1,0 +1,36 @@
+name: reading_tutor
+description: 拍照分析英语阅读、逐句精讲并同步单词到墨墨背单词
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # 拍照 / 相册选图
+  image_picker: ^1.1.2
+  # 端上离线 OCR（拉丁字符，英文印刷体）
+  google_mlkit_text_recognition: ^0.14.0
+  # 网络请求
+  dio: ^5.7.0
+  # 敏感信息加密存储（墨墨 Token）
+  flutter_secure_storage: ^9.2.2
+  # 普通配置存储（后端地址等）
+  shared_preferences: ^2.3.2
+  # 本地离线词典 ECDICT
+  sqflite: ^2.4.1
+  path: ^1.9.0
+  # 单词发音
+  flutter_tts: ^4.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/dict/
