@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ocr_confirm_page.dart';
+import 'history_page.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,6 +12,14 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('英语阅读精讲'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.history_rounded),
+            tooltip: '历史记录',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const HistoryPage()),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.settings_rounded),
             tooltip: '设置',

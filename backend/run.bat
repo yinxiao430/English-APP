@@ -21,5 +21,19 @@ if not exist .env (
 )
 
 echo [3/3] 启动后端服务...
+echo.
+for /f "delims=" %%i in ('powershell -Command "(Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -eq 'WLAN' -and $_.IPAddress -notmatch '^169\.254\.' }).IPAddress"') do set LAN_IP=%%i
+if "%LAN_IP%"=="" set LAN_IP=127.0.0.1
+
+echo ==================================================
+echo   后端服务已启动，访问地址如下：
+echo.
+echo   本机访问:   http://127.0.0.1:8000
+echo   API 文档:   http://127.0.0.1:8000/docs
+echo   局域网访问: http://%LAN_IP%:8000
+echo.
+echo   (Flutter 真机调试请用局域网地址，手机需连同一WiFi)
+echo ==================================================
+echo.
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 pause

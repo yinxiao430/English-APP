@@ -139,3 +139,21 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 backend/data/
+
+# 压缩包
+*.zip
+*.rar
+*.7z
+
+# 构建产物
+deploy_build/
+
+# IDE
+.idea/
+
+# 密钥配置文件
+maimemo_api.yaml
+
+# 文档（可选，不想上传就保留这行）
+后端部署说明.txt
+挑战杯申报/

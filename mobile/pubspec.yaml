@@ -22,6 +22,8 @@ dependencies:
   # 本地离线词典 ECDICT
   sqflite: ^2.4.1
   path: ^1.9.0
+  # 历史记录文章指纹（SHA-1 查重）
+  crypto: ^3.0.5
   # 单词发音
   flutter_tts: ^4.2.0
 

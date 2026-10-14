@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'api_service.dart';
 
-/// ECDICT 离线英汉词典查询。
+/// 英汉词典查询：先查端上离线 ECDICT，未命中再回退到云端全量词库（约 340 万词条）。
 /// 需要先把 ecdict.db（表名 dict）放到 assets/dict/ecdict.db，
 /// 下载方式见 assets/dict/README.txt。
 /// assets/dict/version.txt 为词典数据版本号，
@@ -47,15 +48,21 @@ class DictService {
     _db = await openDatabase(dbPath, readOnly: true);
   }
 
-  /// 查词；查不到返回 null。word 为 ECDICT 中 dict 表结构：
-  /// word 单词 / phonetic 音标 / translation 中文释义 / pos 词性 / exchange 词形变化
+  /// 查词：先本地、后云端；都查不到返回 null。
   Future<DictEntry?> lookup(String word) async {
+    return (await _lookupLocal(word)) ?? (await _lookupCloud(word));
+  }
+
+  /// 本地离线词库查询；查不到返回 null。
+  /// ECDICT dict 表结构：
+  /// word 单词 / phonetic 音标 / translation 中文释义 / pos 词性 / exchange 词形变化
+  Future<DictEntry?> _lookupLocal(String word) async {
     final w = word.toLowerCase().trim();
     if (w.isEmpty) return null;
     try {
       await _ensureOpen();
     } catch (e) {
-      // 词典文件尚未放置时不崩溃，返回 null 由上层提示
+      // 词典文件尚未放置时不崩溃，交给云端回退
       return null;
     }
     final rows = await _db!.rawQuery(
@@ -70,6 +77,20 @@ class DictService {
       phonetic: '${r['phonetic'] ?? ''}',
       translation: '${r['translation'] ?? ''}',
       pos: '${r['pos'] ?? ''}',
+      source: 'local',
+    );
+  }
+
+  /// 云端全量词库回退查询；网络异常或未收录返回 null。
+  Future<DictEntry?> _lookupCloud(String word) async {
+    final d = await ApiService.instance.lookupCloud(word);
+    if (d == null) return null;
+    return DictEntry(
+      word: '${d['word'] ?? word}',
+      phonetic: '${d['phonetic'] ?? ''}',
+      translation: '${d['translation'] ?? ''}',
+      pos: '${d['pos'] ?? ''}',
+      source: 'cloud',
     );
   }
 
@@ -89,10 +110,13 @@ class DictEntry {
   final String phonetic;
   final String translation;
   final String pos;
+  /// local = 本地离线词库；cloud = 云端全量词库
+  final String source;
   DictEntry({
     required this.word,
     required this.phonetic,
     required this.translation,
     required this.pos,
+    this.source = 'local',
   });
 }
